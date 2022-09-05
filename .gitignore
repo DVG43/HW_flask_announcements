@@ -1,0 +1,13 @@
+# IDE specific
+.idea/
+.vscode/
+
+env/
+venv/
+.venv/
+
+
+### OS specific ###
+
+#Dockerfile
+#dbstock
