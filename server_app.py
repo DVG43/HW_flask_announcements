@@ -11,6 +11,11 @@ class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
 
+# заголовок
+# описание
+# дата создания
+# владелец
+
 
 @app.route('/test/', methods=['GET'])
 def test():
