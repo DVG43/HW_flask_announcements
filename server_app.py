@@ -1,4 +1,5 @@
-﻿from flask import Flask, jsonify, request
+﻿#import os
+from flask import Flask, jsonify, request
 from flask.views import MethodView  # импорт базового класса для вьюх.
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy import ( 
@@ -31,7 +32,7 @@ def http_error_handler(error: HttpError):
     return response
 
 
-PG_DSN = 'postgresql://dim43:1624@127.0.0.1/for_flask'
+PG_DSN = 'postgresql://dim43:1624@127.0.0.1:5431/for_flask'
 
 engine = create_engine(PG_DSN)   # дключение к базе.
 Session = sessionmaker(bind=engine)   # устраиваем рекурсию - откат
@@ -91,7 +92,7 @@ class AnnounView(MethodView):
 
 announ_view = AnnounView.as_view('announsments')
 app.add_url_rule('/announsments/', view_func=announ_view, methods=['POST'])
-app.add_url_rule('/announsments/<int:announsment_id', view_func=announ_view, methods=['GET', 'DELETE'])
+app.add_url_rule('/announsments/<int:announsment_id>', view_func=announ_view, methods=['GET', 'DELETE'])
 
 
 app.run()

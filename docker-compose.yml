@@ -10,3 +10,28 @@ services:
       POSTGRES_USER : 'dim43'
       POSTGRES_DB : 'for_flask'
 
+#    networks:
+#      dev_network:
+#        aliases:
+#          - db-main
+#
+#
+#  app:
+#    build:
+#      context: .
+#    environment:
+#      PG_DSN: postgresql://dim43:1624@db-main:5432/for_flask
+#    ports:
+#      - "5000:5000"
+#    depends_on:
+#      - db
+#    networks:
+#      dev_network:
+#        aliases:
+#          - flask_api
+#    restart:
+#      always
+#    volumes:
+#      - ./app:/app
+#    working_dir: /app
+#    entrypoint: sh ./run.sh
