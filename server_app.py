@@ -19,6 +19,7 @@ class HttpError(Exception):
         self.message = message
 
 
+# Делаем класс для валидации данных
 class CreateAnnounsment(pydantic.BaseModel):
     headline: str
     description: str
