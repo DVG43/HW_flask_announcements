@@ -1,4 +1,4 @@
-﻿#import os
+﻿import pydantic
 from flask import Flask, jsonify, request
 from flask.views import MethodView  # импорт базового класса для вьюх.
 from sqlalchemy.orm import declarative_base, sessionmaker
@@ -17,6 +17,12 @@ class HttpError(Exception):
     def __init__(self, status_code: int, message: str | dict | list):
         self.status_code = status_code
         self.message = message
+
+
+class CreateAnnounsment(pydantic.BaseModel):
+    headline: str
+    description: str
+    owner: str
 
 
 app = Flask('app')
@@ -72,11 +78,15 @@ class AnnounView(MethodView):
                           {'owner': announ.owner},)
 
      def post(self):
-        json_data = request.json
+        try:
+            validate = CreateAnnounsment(**request.json).dict()
+        except pydantic.ValidationError as error:
+            raise HttpError(400, error.errors())
+
         with Session() as session:
-            announ = Announsment(headline=json_data['headline'],
-                                 description=json_data['description'],
-                                 owner=json_data['owner'],
+            announ = Announsment(headline=validate['headline'],
+                                 description=validate['description'],
+                                 owner=validate['owner'],
                                  )
             session.add(announ)
             session.commit()
