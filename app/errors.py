@@ -25,4 +25,4 @@ def http_error_handler(error: HttpError):
            'reason': error.message
     })
     response.status_code = error.status_code
-       return response
+    return response
