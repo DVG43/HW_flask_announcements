@@ -5,7 +5,6 @@ from sqlalchemy import (
       DateTime,
       String,
       func,
-      create_engine
 )
 
 Base = declarative_base()
