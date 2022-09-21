@@ -1,37 +1,61 @@
 version: '3.9'
 
+networks:
+ my_network:
+
+volumes:
+  pgdata:
+
 services:
   db:
-    image: postgres:13.4
+    image: postgres:13.4  #latest
     ports:
       - "5431:5432"
     environment:
       POSTGRES_PASSWORD : 1624
       POSTGRES_USER : 'dim43'
       POSTGRES_DB : 'for_flask'
-
-#    networks:
-#      dev_network:
-#        aliases:
-#          - db-main
-#
-#
-#  app:
-#    build:
-#      context: .
-#    environment:
-#      PG_DSN: postgresql://dim43:1624@db-main:5432/for_flask
-#    ports:
-#      - "5000:5000"
-#    depends_on:
-#      - db
-#    networks:
-#      dev_network:
-#        aliases:
-#          - flask_api
-#    restart:
-#      always
+#  healthcheck:
+#     test:["CMD-SHELL", "pg_isready -U admin1 admin1pwd -d for_flask"]
+#     interval: 10s
+#     timeout: 5s
+#     retries: 5
+#     start_period: 10s
+#  restart: unless-stopped
 #    volumes:
-#      - ./app:/app
-#    working_dir: /app
-#    entrypoint: sh ./run.sh
+#    -.:/docker-entrypoint-initdb.d # это нужно если из корневого каталога таблицу нужно считывать из sql файла
+#      -pgdata:/var/lib/postgresql/data
+#      -./logs:/var/log
+
+    networks:
+      my_network:
+        aliases:
+          - db-host
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile.migrate
+    environment:
+      PG_DSN: 'postgresql://dim43:1624@127.0.0.1:5432/for_flask'
+    networks:
+      my_network:
+    depends_on:
+      - db
+    volumes:
+      - ./app/:/app
+
+  app:
+    build:
+      context: .
+    environment:
+      PG_DSN: 'postgresql://dim43:1624@127.0.0.1:5432/for_flask'
+    networks:
+      my_network:
+    depends_on:
+      - db
+    ports:
+      - "5432:5432"
+    restart: 'on-failure'
+    volumes:
+      - ./app/:/app
