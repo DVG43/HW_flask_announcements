@@ -35,7 +35,7 @@ services:
   migrate:
     build:
       context: .
-      dockerfile: Dockerfile.migrate
+      dockerfile: Docker.migrate
     environment:
       PG_DSN: 'postgresql://dim43:1624@127.0.0.1:5432/for_flask'
     networks:
