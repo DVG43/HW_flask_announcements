@@ -43,7 +43,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./app/:/app
+      - ./app/:/run
 
   app:
     build:
@@ -58,4 +58,4 @@ services:
       - "5432:5432"
     restart: 'on-failure'
     volumes:
-      - ./app/:/app
+      - ./app/:/run

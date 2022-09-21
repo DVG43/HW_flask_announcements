@@ -6,6 +6,6 @@ WORKDIR /src
 
 RUN pip install --no-cache-dir -r /src/requirements.txt
 
-CMD ["python3", "manage.py", "makemigrations"]
-CMD ["python3", "manage.py", "migrate"]
-CMD ["python3", "manage.py", "runserver"]
+CMD ["python3", "run.py", "makemigrations"]
+CMD ["python3", "run.py", "migrate"]
+CMD ["python3", "run.py", "runserver"]
